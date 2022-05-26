@@ -79,6 +79,26 @@ public class PinballView {
 		frmGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmGame.getContentPane().setLayout(null);
 		
+		btnGoMenu = new JButton("");
+		btnGoMenu.setIcon(new ImageIcon("assets/images/menu.png"));
+		btnGoMenu.setBounds(285, 608, 282, 62);
+		btnGoMenu.setBorderPainted(false);
+		btnGoMenu.setContentAreaFilled(false);
+		btnGoMenu.setFocusPainted(false);
+		btnGoMenu.setOpaque(false);
+		frmGame.getContentPane().add(btnGoMenu);
+		btnGoMenu.setVisible(false);
+		
+		btnNewGame = new JButton("");
+		btnNewGame.setIcon(new ImageIcon("assets/images/newGame.png"));
+		btnNewGame.setBounds(285, 536, 282, 62);
+		btnNewGame.setBorderPainted(false);
+		btnNewGame.setContentAreaFilled(false);
+		btnNewGame.setFocusPainted(false);
+		btnNewGame.setOpaque(false);
+		frmGame.getContentPane().add(btnNewGame);
+		btnNewGame.setVisible(false);
+		
 		lblStatus = new JLabel("");
 		lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStatus.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -126,16 +146,6 @@ public class PinballView {
 		lblFondo.setIcon(new ImageIcon("assets/images/fondo.png"));
 		lblFondo.setBounds(0, 0, 886, 731);
 		frmGame.getContentPane().add(lblFondo);
-		
-		btnNewGame = new JButton("New Game");
-		btnNewGame.setBounds(371, 536, 112, 62);
-		frmGame.getContentPane().add(btnNewGame);
-		btnNewGame.setVisible(false);
-		
-		btnGoMenu = new JButton("Menu");
-		btnGoMenu.setBounds(371, 608, 112, 62);
-		frmGame.getContentPane().add(btnGoMenu);
-		btnGoMenu.setVisible(false);
 
 
 	}
@@ -203,6 +213,8 @@ public class PinballView {
 
 		}else {
 			lblInfo.setText("Se acabaron las bolas, gracias por jugar!");
+			btnGoMenu.setVisible(true);
+			btnNewGame.setVisible(true);
 			btnGoMenu.setVisible(true);
 			btnNewGame.setVisible(true);
 		}
