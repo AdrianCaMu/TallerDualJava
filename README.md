@@ -8,6 +8,11 @@ Programa Java que simula el típico juego de pinball.
 ## 👨‍💻 Herramientas utilizadas 👨‍💻
 * IDE: Eclipse
 
+## 👨‍💻 Instrucciones 👨‍💻
+* En la carpeta assets: appsettings.json contiene las credenciales de la base de datos a utilizar.
+* En la carpeta assets: carpeta log para ver los log generados al usar la aplicacion.
+* En la BD adjunta en el proyecto hay un usuario: admin con contraseña: 123 para hacer pruebas, pero se puede registrar cualquier usuario nuevo.
+
 ## 🧑‍💻 Hecho por ✍️💪
 * Adrián Cámara Muñoz
 
