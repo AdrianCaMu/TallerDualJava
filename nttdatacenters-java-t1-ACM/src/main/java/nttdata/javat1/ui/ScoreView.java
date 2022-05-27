@@ -20,21 +20,25 @@ import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Vista de Netflix
+ * Vista Tabla de puntuaciones
  * 
  * @author Adrián Cámara Muñoz
  *
  */
 public class ScoreView {
+	private static final Logger LOG = LoggerFactory.getLogger(ScoreView.class);
 
-	// Propiedades
+	// Fields
 	private JFrame parent;
 	private JFrame frmMenu;
 	private JButton btnVolver;
 	private JButton btnNewGame;
-	private JLabel lblFondo;
 	private JButton btnScore;
 	private ScoreDAO scoreDAO;
 	private JLabel lblScoreTable;
@@ -63,10 +67,13 @@ public class ScoreView {
 	 * configuración de los distintos elementos de la pantalla
 	 */
 	private void configureUIComponents() {
+		
+		LOG.info("Método: ScoreView.configureUIComponents() | Inicio");
+
 		frmMenu.getContentPane().setBackground(Color.LIGHT_GRAY);
 		frmMenu.setIconImage(Toolkit.getDefaultToolkit().getImage("assets/images/billarball.png"));
 		frmMenu.setBounds(100, 100, 900, 750);
-		frmMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmMenu.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frmMenu.getContentPane().setLayout(null); 
 		
 		lblScoreTable = new JLabel("New label");
@@ -83,10 +90,12 @@ public class ScoreView {
 		btnVolver.setOpaque(false);
 		frmMenu.getContentPane().add(btnVolver);
 		
-		lblFondo = new JLabel("");
+		JLabel lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon("assets/images/fondo.png"));
 		lblFondo.setBounds(0, 0, 886, 731);
 		frmMenu.getContentPane().add(lblFondo);
+		
+		LOG.info("Método: ScoreView.configureUIComponents() | Fin");
 
 	}
 
@@ -95,6 +104,7 @@ public class ScoreView {
 	 */
 	private void configureListener() {
 		
+		LOG.info("Método: ScoreView.configureListener() | Inicio");
 
 
 		// cerrar sesión y volver a pantalla de menu
@@ -104,20 +114,29 @@ public class ScoreView {
 				parent.setVisible(true);
 			}
 		});
+		
+		LOG.info("Método: ScoreView.configureListener() | Fin");
+
 	}
 	
+	/**
+	 * Pintar las puntuaciones
+	 */
 	private void printScore(){
-		String cadena = "<html><body><ol>";
+		LOG.info("Método: ScoreView.printScore() | Inicio");
+		
+		StringBuilder cadena = new StringBuilder();
+		cadena.append("<html><body><ol>");
 		ArrayList<User> list = scoreDAO.getAll();
 
 		// establecemos los campos de la serie en cuestión
 		for(User u : list) {
-			cadena += "<li><h1>" + u.getUsername() + ": " + u.getScore() + "</h1></li>";
+			cadena.append("<li><h1>" + u.getUsername() + ": " + u.getScore() + "</h1></li>");
 		}
 		
-		cadena += "</ol></body></html>";
+		cadena.append("</ol></body></html>");
 		
-		lblScoreTable.setText(cadena);
-		
+		lblScoreTable.setText(cadena.toString());
+		LOG.info("Método: ScoreView.printScore() | Fin");
 	}
 }

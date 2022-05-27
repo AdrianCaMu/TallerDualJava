@@ -3,6 +3,8 @@ package nttdata.javat1.ui;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+
+import nttdata.javat1.utils.Constants;
 import nttdata.javat1.utils.HashPasswd;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -13,6 +15,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import nttdata.javat1.T1MainACM;
 import nttdata.javat1.dao.UserDAO;
 
 import java.awt.Color;
@@ -27,23 +35,22 @@ import java.awt.Toolkit;
  */
 public class LoginView {
 
-	// Propiedades
+	private static final Logger LOG = LoggerFactory.getLogger(LoginView.class);
+
+	// Fields
 	private JFrame frmLogin;
 	private JTextField tfUser;
 	private JButton btnLogin;
 	private JButton btnRegister;
-	private JLabel lblUsername;
-	private JLabel lblPasswd;
 	private JPasswordField pfPassword;
 	private JLabel lblErrorMessage;
-	private UserDAO usuarioDAO;
-	private JLabel lblFondo;
+	private UserDAO userDAO;
 
 	/**
 	 * Create the application.
 	 */
 	public LoginView() {
-		usuarioDAO = new UserDAO();
+		userDAO = new UserDAO();
 		initialize();
 		this.frmLogin.setVisible(true);
 	}
@@ -61,10 +68,13 @@ public class LoginView {
 	 * configuración de los distintos elementos de la pantalla
 	 */
 	private void configureUIComponents() {
+		
+		LOG.info("Método: LoginView.configureUIComponents() | Inicio");
+
 		frmLogin.getContentPane().setBackground(Color.LIGHT_GRAY);
-		frmLogin.setIconImage(Toolkit.getDefaultToolkit().getImage("assets/images/billarball.png"));
+		frmLogin.setIconImage(Toolkit.getDefaultToolkit().getImage(Constants.ICON));
 		frmLogin.setBounds(100, 100, 900, 750);
-		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmLogin.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frmLogin.getContentPane().setLayout(null);
 
 		this.btnLogin = new JButton("");
@@ -87,7 +97,7 @@ public class LoginView {
 		frmLogin.getContentPane().add(btnRegister);
 
 		tfUser = new JTextField();
-		tfUser.setFont(new Font("Tahoma", Font.BOLD, 15));
+		tfUser.setFont(new Font(Constants.FAMILY, Font.BOLD, 15));
 		tfUser.setHorizontalAlignment(SwingConstants.CENTER);
 		tfUser.setForeground(new Color(56, 109, 185));
 		tfUser.setBackground(Color.WHITE);
@@ -95,22 +105,22 @@ public class LoginView {
 		frmLogin.getContentPane().add(tfUser);
 		tfUser.setColumns(10);
 
-		lblUsername = new JLabel("Username");
+		JLabel lblUsername = new JLabel("Username");
 		lblUsername.setForeground(Color.DARK_GRAY);
 		lblUsername.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblUsername.setFont(new Font("Tahoma", Font.BOLD, 30));
+		lblUsername.setFont(new Font(Constants.FAMILY, Font.BOLD, 30));
 		lblUsername.setBounds(235, 325, 159, 38);
 		frmLogin.getContentPane().add(lblUsername);
 
-		lblPasswd = new JLabel("Password");
+		JLabel lblPasswd = new JLabel("Password");
 		lblPasswd.setForeground(Color.DARK_GRAY);
 		lblPasswd.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblPasswd.setFont(new Font("Tahoma", Font.BOLD, 30));
+		lblPasswd.setFont(new Font(Constants.FAMILY, Font.BOLD, 30));
 		lblPasswd.setBounds(235, 369, 162, 38);
 		frmLogin.getContentPane().add(lblPasswd);
 
 		pfPassword = new JPasswordField();
-		pfPassword.setFont(new Font("Tahoma", Font.BOLD, 15));
+		pfPassword.setFont(new Font(Constants.FAMILY, Font.BOLD, 15));
 		pfPassword.setHorizontalAlignment(SwingConstants.CENTER);
 		pfPassword.setForeground(new Color(56, 109, 185));
 		pfPassword.setBackground(Color.WHITE);
@@ -119,21 +129,28 @@ public class LoginView {
 
 		lblErrorMessage = new JLabel("");
 		lblErrorMessage.setHorizontalAlignment(SwingConstants.CENTER);
-		lblErrorMessage.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblErrorMessage.setFont(new Font(Constants.FAMILY, Font.BOLD, 16));
 		lblErrorMessage.setForeground(Color.RED);
 		lblErrorMessage.setBounds(235, 410, 402, 38);
 		frmLogin.getContentPane().add(lblErrorMessage);
 
-		lblFondo = new JLabel("");
+		JLabel lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon("assets/images/fondo.png"));
 		lblFondo.setBounds(0, 0, 886, 731);
 		frmLogin.getContentPane().add(lblFondo);
+	
+		LOG.info("Método: LoginView.configureUIComponents() | Fin");
+
 	}
+	
 
 	/**
 	 * configuración de la activación de los botones
 	 */
 	private void configureListener() {
+		
+		LOG.info("Método: LoginView.configureListener() | Inicio");
+
 		// boton login para acceder al pinball
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -168,6 +185,8 @@ public class LoginView {
 				new RegisterView(frmLogin);
 			}
 		});
+		
+		LOG.info("Método: LoginView.configureListener() | Fin");
 
 	}
 
@@ -175,24 +194,34 @@ public class LoginView {
 	 * comprueba si el usuario y la password son correctos
 	 */
 	private void checkLogin() {
+		
+		LOG.info("Método: LoginView.checkLogin() | Inicio");
 
 		String username = tfUser.getText();
 		String passwd = new String(pfPassword.getPassword());
-		String passwdCodified = HashPasswd.HashIt(passwd, "123456");
+		String passwdCodified = HashPasswd.hashIt(passwd, "123456");
 
 		try {
 
-			boolean logicaCorrecto = usuarioDAO.login(username, passwdCodified);
+			boolean logicaCorrecto = userDAO.login(username, passwdCodified);
 			if (logicaCorrecto) {
+				LOG.info("Método: LoginView.checkLogin() | Login correcto");
 				frmLogin.dispose();
 				new MenuView(username);
 			} else {
 				lblErrorMessage.setText("ERROR: correo o contraseña incorrectos.");
+				LOG.debug("Método: LoginView.checkLogin() | Login fallido");
+
 			}
 
 		} catch (Exception e) {
 			lblErrorMessage.setText("ERROR: correo o contraseña incorrectos.");
+			LOG.error("Método: LoginView.checkLogin() | Login fallido");
+
 		}
+		
+		LOG.info("Método: LoginView.checkLogin() | Fin");
+
 
 	}
 }

@@ -1,0 +1,47 @@
+<configuration debug="false">
+
+	<!-- VARIABLES -->
+	<timestamp key="varDate" datePattern="dd-MM-yyyy" />
+	<property name="iniciales" value="ACM" />
+	
+	<!-- MOSTRAR LOGS EN CONSOLA -->
+	<appender name="ConsoleLog"
+		class="ch.qos.logback.core.ConsoleAppender">
+
+		<encoder
+			class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+
+		<!-- MOSTRAR LOG CON LAYOUT PERSONALIZADO -->
+			<layout class="nttdata.javat1.utils.LayoutLockBack">
+				<prefix>ACM</prefix>
+				<printThreadName>false</printThreadName>
+			</layout>
+
+		</encoder>
+	</appender>
+	
+	<!-- GENERAR FICHEROS CON LOGS -->
+	<appender name="FileLog"
+		class="ch.qos.logback.core.FileAppender">
+		
+		<!-- NMOMBRE FICHERO -->
+		<file>./assets/logs//log${iniciales}-${varDate}.log</file>
+		<append>false</append>
+		
+		<!-- MOSTRAR LOG CON LAYOUT PERSONALIZADO -->
+		<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+			<layout class="nttdata.javat1.utils.LayoutLockBack">
+				<prefix>ACM</prefix>
+				<printThreadName>false</printThreadName>
+			</layout>
+		</encoder>
+	</appender>
+
+	<!-- MOSTRAR TUBERIAS DE CONSOLA Y FICHERO A NIVEL DEBUG -->
+	<root level="DEBUG">
+		<appender-ref ref="FileLog" />
+		<appender-ref ref="ConsoleLog" />
+
+	</root>
+
+</configuration>

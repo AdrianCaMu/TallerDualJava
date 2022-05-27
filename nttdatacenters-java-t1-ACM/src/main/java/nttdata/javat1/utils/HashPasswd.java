@@ -11,6 +11,10 @@ import java.security.NoSuchAlgorithmException;
  *
  */
 public class HashPasswd {
+	
+	private HashPasswd() {
+		super();
+	}
 
 	/**
 	 * get SecurePassword with SHA-512
@@ -19,7 +23,7 @@ public class HashPasswd {
 	 * @param salt           salt to hash
 	 * @return password generated
 	 */
-	public static String HashIt(String passwordToHash, String salt) {
+	public static String hashIt(String passwordToHash, String salt) {
 		String generatedPassword = null;
 
 		try {

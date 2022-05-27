@@ -15,9 +15,10 @@ import com.google.gson.JsonParser;
  *
  */
 public class Credentials {
-
-	// fichero en el que se encuentran las credenciales
-	private final static String appSettingsFile = "assets/appsettings.json";
+	
+	private Credentials() {
+		super();
+	}
 
 	/**
 	 * Leer del fichero json las credenciales
@@ -29,12 +30,12 @@ public class Credentials {
 		List<String> list;
 
 		try {
-			list = Files.readAllLines(new File(appSettingsFile).toPath());
-			String appsettingsContent = "";
+			list = Files.readAllLines(new File(Constants.SETTINGS).toPath());
+			StringBuilder  appsettingsContent = new StringBuilder();
 			for (var l : list) {
-				appsettingsContent += l;
+				appsettingsContent.append(l);
 			}
-			JsonObject jsonObject = JsonParser.parseString(appsettingsContent).getAsJsonObject();
+			JsonObject jsonObject = JsonParser.parseString(appsettingsContent.toString()).getAsJsonObject();
 
 			return jsonObject.get(keyword).getAsString();
 
@@ -45,14 +46,6 @@ public class Credentials {
 	}
 
 	// distintos tipos de credenciales guardadas
-
-	public static String correoEmailing() {
-		return readFromFile("userEmail");
-	}
-
-	public static String passwordEmailing() {
-		return readFromFile("passwordEmail");
-	}
 
 	public static String getPassDB() {
 		return readFromFile("passwordBD");

@@ -2,6 +2,13 @@ package nttdata.javat1.ui;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.WindowConstants;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import nttdata.javat1.utils.Constants;
+
 import java.awt.Color;
 import java.awt.Toolkit;
 import javax.swing.JButton;
@@ -9,28 +16,29 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
-
 /**
- * Vista de Netflix
+ * Vista Menu
  * 
  * @author Adrián Cámara Muñoz
  *
  */
 public class MenuView {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(MenuView.class);
 
-	// Propiedades
-	private String correo;
+
+	// Fields
+	private String username;
 	private JFrame frmMenu;
-	private JButton btnVolver;
+	private JButton btnReturn;
 	private JButton btnNewGame;
-	private JLabel lblFondo;
 	private JButton btnScore;
 
 	/**
 	 * Create the application.
 	 */
-	public MenuView(String correo) {
-		this.correo = correo;
+	public MenuView(String username) {
+		this.username = username;
 		initialize();
 		frmMenu.setVisible(true);
 	}
@@ -48,12 +56,15 @@ public class MenuView {
 	 * configuración de los distintos elementos de la pantalla
 	 */
 	private void configureUIComponents() {
-		frmMenu.getContentPane().setBackground(Color.LIGHT_GRAY);
-		frmMenu.setIconImage(Toolkit.getDefaultToolkit().getImage("assets/images/billarball.png"));
-		frmMenu.setBounds(100, 100, 900, 750);
-		frmMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmMenu.getContentPane().setLayout(null);
 		
+		LOG.info("Método: MenuView.configureUIComponents() | Inicio");
+
+		frmMenu.getContentPane().setBackground(Color.LIGHT_GRAY);
+		frmMenu.setIconImage(Toolkit.getDefaultToolkit().getImage(Constants.ICON));
+		frmMenu.setBounds(100, 100, 900, 750);
+		frmMenu.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frmMenu.getContentPane().setLayout(null);
+
 		btnScore = new JButton("");
 		btnScore.setIcon(new ImageIcon("assets/images/ScoreTable.png"));
 		btnScore.setOpaque(false);
@@ -62,16 +73,16 @@ public class MenuView {
 		btnScore.setBorderPainted(false);
 		btnScore.setBounds(321, 422, 274, 85);
 		frmMenu.getContentPane().add(btnScore);
-		
-		btnVolver = new JButton("");
-		btnVolver.setIcon(new ImageIcon("assets/images/LogginOff.png"));
-		btnVolver.setBounds(321, 500, 274, 85);
-		btnVolver.setBorderPainted(false);
-		btnVolver.setContentAreaFilled(false);
-		btnVolver.setFocusPainted(false);
-		btnVolver.setOpaque(false);
-		frmMenu.getContentPane().add(btnVolver);
-		
+
+		btnReturn = new JButton("");
+		btnReturn.setIcon(new ImageIcon("assets/images/LogginOff.png"));
+		btnReturn.setBounds(321, 500, 274, 85);
+		btnReturn.setBorderPainted(false);
+		btnReturn.setContentAreaFilled(false);
+		btnReturn.setFocusPainted(false);
+		btnReturn.setOpaque(false);
+		frmMenu.getContentPane().add(btnReturn);
+
 		btnNewGame = new JButton("");
 		btnNewGame.setIcon(new ImageIcon("assets/images/newGame.png"));
 		btnNewGame.setBounds(321, 345, 274, 85);
@@ -80,11 +91,14 @@ public class MenuView {
 		btnNewGame.setFocusPainted(false);
 		btnNewGame.setOpaque(false);
 		frmMenu.getContentPane().add(btnNewGame);
-		
-		lblFondo = new JLabel("");
+
+		JLabel lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon("assets/images/fondo.png"));
 		lblFondo.setBounds(0, 0, 886, 731);
 		frmMenu.getContentPane().add(lblFondo);
+		
+		LOG.info("Método: MenuView.configureUIComponents() | Fin");
+
 
 	}
 
@@ -93,15 +107,18 @@ public class MenuView {
 	 */
 	private void configureListener() {
 		
-		//comenzar partida
+		LOG.info("Método: MenuView.configureListener() | Inicio");
+
+
+		// comenzar partida
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frmMenu.dispose();
-				new PinballView(correo);
+				new PinballView(username);
 			}
 		});
-		
-		//ver tabla de puntuaciones
+
+		// ver tabla de puntuaciones
 		btnScore.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frmMenu.dispose();
@@ -110,11 +127,14 @@ public class MenuView {
 		});
 
 		// cerrar sesión y volver a pantalla de login
-		btnVolver.addActionListener(new ActionListener() {
+		btnReturn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frmMenu.dispose();
 				new LoginView();
 			}
 		});
+		
+		LOG.info("Método: MenuView.configureListener() | Fin");
+
 	}
 }
